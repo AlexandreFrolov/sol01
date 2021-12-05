@@ -5,9 +5,6 @@ web3.eth.getAccounts()
 .then(accList => {
   return accList;
 })
-.on('error', function (error) {
-  console.error(error);
-})
 .then(function (accounts) {
   var balancePromeses = [];
   for(let i = 0; i < accounts.length; i++) {
@@ -20,6 +17,9 @@ web3.eth.getAccounts()
     }
 //    process.exit(0);
   });
+})
+.on('error', function (error) {
+  console.error(error);
 })
 .catch(function (error) {
   console.error(error);
