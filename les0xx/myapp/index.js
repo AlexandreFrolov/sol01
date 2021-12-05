@@ -8,6 +8,11 @@ const net = require('net');
 const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
 
 app.get('/', (req, res) => {
+  res.send('/accounts - Get Acconts List');
+})
+
+
+app.get('/accounts', (req, res) => {
 
   web3.eth.getAccounts()
   .then(accList => {
@@ -22,18 +27,24 @@ app.get('/', (req, res) => {
     Promise.all(balancePromeses).then(values => {
       var txt = '';
       var balance = '';
+      var data = [];
       for(let i = 0; i < values.length; i++) {
         balance = web3.utils.fromWei(values[i], 'ether');
-        txt = txt + 'Account: ' + accounts[i] + ', balance = ' + balance + ' Ether' + '<br>';
+
+        data.push({
+          Account: accounts[i],
+          Balance: balance
+        });
       }
-      res.send(txt)
-  //    process.exit(0);
+      res.json(data);
     });
   })
   .catch(function (error) {
     console.error(error);
   });
 })
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
