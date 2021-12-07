@@ -50,14 +50,11 @@ web3.eth.getCoinbase()
   })
   .then(function () {
 
-  myContract.methods.setString("Test string 307309").send({from: myCoinbase})
+  myContract.methods.setString("Тестовая строка 3739").send({from: myCoinbase})
   .once('transactionHash', (hash) => {
     console.log('setString hash: ' + hash);
   })
-/*  .on('confirmation', (confNumber) => {
-    console.log('setString confNumber: ' + confNumber);
-  })
-*/  .on('receipt', (receipt) => {
+  .on('receipt', (receipt) => {
     console.log(JSON.stringify(receipt, undefined, 2));
   })
 })

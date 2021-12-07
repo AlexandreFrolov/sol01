@@ -44,7 +44,6 @@ web3.eth.getCoinbase()
   {
      if(!error){
        console.log('getString result: ' + result);
-//       console.log(JSON.stringify(result, undefined, 2));
      } else{
        console.log(error);
      }
