@@ -17,4 +17,10 @@ contract HelloSol {
     function getValue() public view returns( uint ) {
         return savedValue;
     }
+    fallback() external payable {}
+    receive() external payable {}
+
+    function getBalance() public view returns( uint256 ) {
+        return address(this).balance;
+    }
 }

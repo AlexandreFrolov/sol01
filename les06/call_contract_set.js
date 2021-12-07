@@ -13,10 +13,9 @@ var myCoinbase;
 
 var fs = require("fs");
 var Web3 = require('web3');
-//var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-const net = require('net');
-const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
-
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+//const net = require('net');
+//const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
 
 
 var version = web3.version;
@@ -53,14 +52,14 @@ myContract.methods.setValue(1234567890).send({from: myCoinbase})
 })
 .then(function () {
 
-myContract.methods.setString("Test string 1111111").send({from: myCoinbase})
+myContract.methods.setString("Тестовая строка 1111111").send({from: myCoinbase})
 .once('transactionHash', (hash) => {
   console.log('setString hash: ' + hash);
 })
-/*.on('confirmation', (confNumber) => {
+.on('confirmation', (confNumber) => {
   console.log('setString confNumber: ' + confNumber);
 })
-*/.on('receipt', (receipt) => {
+.on('receipt', (receipt) => {
   console.log(JSON.stringify(receipt, undefined, 2));
   process.exit(0);
 })

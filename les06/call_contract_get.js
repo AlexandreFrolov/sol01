@@ -12,10 +12,10 @@ var myCoinbase;
 
 var fs = require("fs");
 var Web3 = require('web3');
-//var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
-const net = require('net');
-const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
+//const net = require('net');
+//const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
 
 
 var version = web3.version;
@@ -53,11 +53,21 @@ web3.eth.getCoinbase()
   {
      if(!error){
        console.log('getString result: ' + result);
+     } else{
+       console.log(error);
+     }
+  })
+})
+.then(function () {
+  my_contract.methods.getBalance().call({from: contract_address}, (error, result) =>
+  {
+     if(!error){
+       console.log('Contract address: ', contract_address, 'balance: ', result, 'wei, ', web3.utils.fromWei(result, 'ether'), 'ether');
        process.exit(0);
      } else{
        console.log(error);
      }
-  });
+  })
 })
 .catch(function (error) {
   console.error(error);

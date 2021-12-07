@@ -5,9 +5,6 @@ web3.eth.getAccounts()
 .then(accList => {
   return accList;
 })
-.on('error', function (error) {
-  console.error(error);
-})
 .then(function (accounts) {
   var balancePromeses = [];
   for(let i = 0; i < accounts.length; i++) {
@@ -18,7 +15,7 @@ web3.eth.getAccounts()
     for(let i = 0; i < values.length; i++) {
       console.log('Account: ', accounts[i], 'balance: ', values[i], 'wei, ', web3.utils.fromWei(values[i], 'ether'), 'ether');
     }
-//    process.exit(0);
+    process.exit(0);
   });
 })
 .catch(function (error) {

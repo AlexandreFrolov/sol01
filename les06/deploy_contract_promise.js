@@ -1,7 +1,8 @@
-// node deploy_contract_promise.js HelloSol *******
+// node deploy_contract_promise.js HelloSol ******* ipc
 
 var contract_to_deploy = process.argv[2];
 var unlock_password = process.argv[3];
+var provider = process.argv[4];
 
 console.log('Contract Deploy script: ' + contract_to_deploy);
 
@@ -24,11 +25,25 @@ exec(solc_cmd, (err, stdout, stderr) => {
 
 var fs = require("fs");
 var Web3 = require('web3');
-//var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-//var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
-const net = require('net');
-const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
-
+var web3;
+if(provider == 'ipc')
+{
+  const net = require('net');
+  web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
+}
+else if(provider == 'http')
+{
+  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+}
+else if(provider == 'ws')
+{
+  web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
+}
+else
+{
+  console.log('Wrong provider. Use net, http or ws');
+  process.exit(0);
+}
 
 web3.eth.getCoinbase()
 .then(coinbase => {
@@ -49,7 +64,7 @@ web3.eth.getCoinbase()
 .then(function (gas) {
   console.log('Gas estimation: ' + gas);
   contractObject = new web3.eth.Contract(abi, myCoinbase, {
-    from: myCoinbase, gas: 4700000, data: '0x'+ bin
+    from: myCoinbase, gas: 4700000, gasPrice: '20000000000', data: '0x'+ bin
   });
 
   contractObject.deploy({
@@ -65,10 +80,10 @@ web3.eth.getCoinbase()
   .on('receipt', (receipt) => {
      console.log('contractAddress: ' + receipt.contractAddress)
   })
-/*  .on('confirmation', (confirmationNumber, receipt) => {
+  .on('confirmation', (confirmationNumber, receipt) => {
     console.log('on confirmation: ' + confirmationNumber)
   })
-*/  .then((newContractInstance) => {
+  .then((newContractInstance) => {
     console.log('Contract Deployed');
     console.log('coinbase: ' + myCoinbase);
     console.log('New Contract address: ' + newContractInstance.options.address);
