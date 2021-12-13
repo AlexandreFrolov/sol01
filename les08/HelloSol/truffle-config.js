@@ -14,7 +14,7 @@ module.exports = {
   rinkeby: {
       host: "localhost",
       port: 8545,
-      from: "0xaf3cc1db3ef0dce4c1355e87ce11bb1c68fb0ed4",
+      from: "0x2b4218cc6d8fd1691395dc5223e201a56bbec512",
       network_id: 4,
       gas: 4612388 // Gas limit used for deploys
     }
