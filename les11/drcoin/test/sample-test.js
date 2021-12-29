@@ -42,5 +42,20 @@ describe("DrCoin", function () {
       var balance2 = await mydrcoin.balanceOf(accounts[2]);
       console.log("balance2: " + balance2);
 
+
+      var beforeBurn = BigInt(await mydrcoin.balanceOf(accounts[0]));
+      console.log("balance0 Before Burn: " + beforeBurn);
+
+      const burnTx = await mydrcoin.burn(50);
+      await burnTx.wait();
+
+      var afterBurn = BigInt(await mydrcoin.balanceOf(accounts[0]));
+      console.log("balance0 After Burn: " + afterBurn);
+
+      var delta = beforeBurn - afterBurn;
+      console.log("Delta: " + delta);
+      expect(BigInt(await mydrcoin.balanceOf(accounts[0]))).to.equal(BigInt(beforeBurn) - BigInt(50));
+
+
   });
 });

@@ -53,7 +53,7 @@ contract DrCoin {
         return allowed[tokenOwner][spender];
     }
 
-    function burn (uint256 _value) public {
+    function burn(uint256 _value) public {
         require(balanceOf(msg.sender) >= _value, "Not enough tokens");
         balances[msg.sender] -= _value;
         totalSupply -= _value;
