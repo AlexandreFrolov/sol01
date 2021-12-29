@@ -21,7 +21,7 @@ contract DrCoin {
 
     function transfer(address recipient, uint tokens) public returns (bool success) {
         require(recipient != address(0), "Transfer to the zero address");
-        require(balances[msg.sender] >= tokens, "Insufficient tokens");
+        require(balances[msg.sender] >= tokens, "Not enough tokens");
 
         balances[msg.sender] = safeSub(balances[msg.sender], tokens);
         balances[recipient] = safeAdd(balances[recipient], tokens);
@@ -32,8 +32,8 @@ contract DrCoin {
     function transferFrom(address sender, address recipient, uint tokens) public returns (bool success) {
         require(sender != address(0), "Transfer from the zero address");
         require(recipient != address(0), "Transfer to the zero address");
-        require(balanceOf(sender) >= tokens, "Insufficient tokens");
-        require(allowed[sender][msg.sender] >= tokens, "Insufficient tokens allowed");
+        require(balanceOf(sender) >= tokens, "Not enough tokens");
+        require(allowed[sender][msg.sender] >= tokens, "Not enough tokens allowed");
 
         balances[sender] = safeSub(balances[sender], tokens);
         allowed[sender][msg.sender] = safeSub(allowed[sender][msg.sender], tokens);
@@ -54,15 +54,15 @@ contract DrCoin {
     }
 
     function burn (uint256 _value) public {
-        require(balanceOf(msg.sender) >= _value, "Insufficient tokens");
+        require(balanceOf(msg.sender) >= _value, "Not enough tokens");
         balances[msg.sender] -= _value;
         totalSupply -= _value;
         emit Burn(msg.sender, _value);
     }
 
     function burnFrom(address _from, uint256 _value) public {
-        require(balanceOf(_from) >= _value, "Insufficient tokens");
-        require(allowed[_from][msg.sender] >= _value, "Insufficient tokens allowed");
+        require(balanceOf(_from) >= _value, "Not enough tokens");
+        require(allowed[_from][msg.sender] >= _value, "Not enough tokens allowed");
         balances[_from] -= _value;
         totalSupply -= _value;
         emit Burn(_from, _value);
@@ -80,6 +80,5 @@ contract DrCoin {
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Burn(address indexed from, uint value);
-
 }
 
