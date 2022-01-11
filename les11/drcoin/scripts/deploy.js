@@ -22,7 +22,7 @@ async function main() {
   await mydrcoin.deployed();
 
   console.log("DrCoin deployed to:", mydrcoin.address);
-  fs.writeFileSync("DrCoin.address", mydrcoin.address);
+  fs.writeFileSync("/home/developer/sol01/les11/drcoin/DrCoin.address", mydrcoin.address);
 
   var path = require('path');
   var contractJSON = require(path.join(__dirname, '../artifacts/contracts/DrCoin.sol/DrCoin.json'));
