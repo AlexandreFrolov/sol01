@@ -10,7 +10,7 @@ var path = require('path');
 
 var contract_name = 'DrCoin';
 var network_id = 4;
-var unlock_password = '*******';
+var unlock_password = 'ptktysq777888';
 
 var contractJSON = require(path.join(__dirname, '../dcoin/build/contracts/' + contract_name + '.json'));
 var decoded = JSON.parse(JSON.stringify(contractJSON.networks, undefined, 2));
