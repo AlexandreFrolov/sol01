@@ -1,0 +1,14 @@
+{
+  "name": "drcoin-api",
+  "version": "1.0.0",
+  "description": "Doctor Coin API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "hardhat": "^2.8.2"
+  }
+}
