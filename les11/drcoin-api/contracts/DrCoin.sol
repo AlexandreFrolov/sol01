@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity ^0.8.0;
 
 contract DrCoin {
     string public name = "Doctor Coin";
@@ -22,9 +22,10 @@ contract DrCoin {
     function transfer(address recipient, uint tokens) public returns (bool success) {
         require(recipient != address(0), "Transfer to the zero address");
         require(balances[msg.sender] >= tokens, "Not enough tokens");
-
-        balances[msg.sender] = safeSub(balances[msg.sender], tokens);
-        balances[recipient] = safeAdd(balances[recipient], tokens);
+        unchecked {
+          balances[msg.sender] = balances[msg.sender] - tokens;
+        }
+        balances[recipient] = balances[recipient] + tokens;
         emit Transfer(msg.sender, recipient, tokens);
         return true;
     }
@@ -34,10 +35,11 @@ contract DrCoin {
         require(recipient != address(0), "Transfer to the zero address");
         require(balanceOf(sender) >= tokens, "Not enough tokens");
         require(allowed[sender][msg.sender] >= tokens, "Not enough tokens allowed");
-
-        balances[sender] = safeSub(balances[sender], tokens);
-        allowed[sender][msg.sender] = safeSub(allowed[sender][msg.sender], tokens);
-        balances[recipient] = safeAdd(balances[recipient], tokens);
+        unchecked {
+          balances[sender] = balances[sender] - tokens;
+        }
+        allowed[sender][msg.sender] = allowed[sender][msg.sender] - tokens;
+        balances[recipient] = balances[recipient] + tokens;
         emit Transfer(sender, recipient, tokens);
         return true;
     }
@@ -53,32 +55,38 @@ contract DrCoin {
         return allowed[tokenOwner][spender];
     }
 
-    function burn(uint256 _value) public {
-        require(balanceOf(msg.sender) >= _value, "Not enough tokens");
-        balances[msg.sender] -= _value;
-        totalSupply -= _value;
-        emit Burn(msg.sender, _value);
+    function burn(uint256 tokens) public returns (bool success){
+        require(balanceOf(msg.sender) >= tokens, "Not enough tokens");
+        unchecked {
+          balances[msg.sender] -= tokens;
+        }
+        totalSupply -= tokens;
+        emit Burn(msg.sender, tokens);
+        emit Transfer(msg.sender, address(0), tokens);
+        return true;
     }
 
-    function burnFrom(address _from, uint256 _value) public {
-        require(balanceOf(_from) >= _value, "Not enough tokens");
-        require(allowed[_from][msg.sender] >= _value, "Not enough tokens allowed");
-        balances[_from] -= _value;
-        totalSupply -= _value;
-        emit Burn(_from, _value);
+    function burnFrom(address from, uint256 tokens) public returns (bool success){
+        require(balanceOf(from) >= tokens, "Not enough tokens");
+        require(allowed[from][msg.sender] >= tokens, "Not enough tokens allowed");
+        unchecked {
+          balances[from] -= tokens;
+        }
+        totalSupply -= tokens;
+        emit Burn(from, tokens);
+        emit Transfer(from, address(0), tokens);
+        return true;
     }
 
-    function safeAdd(uint a, uint b) internal pure returns (uint c) {
-        c = a + b;
-        require(c >= a, "Addition overflow");
-    }
-    function safeSub(uint a, uint b) internal pure returns (uint c) {
-        require(b <= a, "Subtraction overflow");
-        c = a - b;
+    function mint(address recipient, uint256 tokens) public returns (bool success){
+        require(recipient != address(0), "Mint to the zero address");
+        totalSupply += tokens;
+        balances[recipient] += tokens;
+        emit Transfer(address(0), recipient, tokens);
+        return true;
     }
 
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Burn(address indexed from, uint value);
 }
-

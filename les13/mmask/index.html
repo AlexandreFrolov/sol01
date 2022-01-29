@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Тестирование Doctor Coin</title>
+<style>
+    body { width: 75em; margin: 2em; font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+<meta charset="utf-8" />
+</head>
+<body>
+<h1>Тестирование Doctor Coin</h1>
+
+<p>MetaMask установлен: <span id="metamask_ok">нет. Для продолжение работы, пожалуйста, <a href="https://metamask.io/" target="_blank">установите!</a></span></p>
+
+<div id="ethereumDiv">
+  <button class="enableEthereumButton">Использовать MetaMask</button>
+  <p><span class="showAccount"></span></p>
+  <div id="playArea">
+    <p><span class="chainID">[not available]</span></p>
+
+    <h2>Перевод Wei на другой аккаунт</h2>
+
+    Отправить <input type="text" id="amountEther" name="amountEtherInput"> Wei на адрес: <input type="text" id="toAddr" name="toAddrInput">
+    <button class="sendEthButton btn">Отправить Wei</button>
+    <p><span class="sendEtherResult"></span></p>
+
+    <h2>Перевод токенов DRCOIN на другой аккаунт</h2>
+
+     Отправить <input type="text" id="amount" name="amountInput"> DRCOIN на адрес: <input type="text" id="sendToAddr" name="sendToAddrInput">
+     <button class="sendDrCoinButton btn">Отправить DRCOIN</button>
+    <p><span class="sendDrCoinResult"></span></p>
+  </div>
+</div>
+
+</body>
+<script src="https://cdn.ethers.io/lib/ethers-5.4.umd.min.js" type="application/javascript"></script>
+<script src="js/script.js"></script>
+</html>

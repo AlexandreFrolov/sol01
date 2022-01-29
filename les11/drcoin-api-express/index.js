@@ -6,10 +6,9 @@ const port = 3000
 const Web3 = require('web3')
 const net = require('net');
 const fs = require('fs')
-const request = require('request')
+const network_id = 4;
 
 const project_path='/home/developer/sol01/les11/drcoin-api/';
-const network_id = 4;
 
 const unlock_password_path = project_path + 'DrCoin.password';
 const unlock_password = fs.readFileSync(unlock_password_path, 'utf8');
@@ -27,7 +26,6 @@ let debug=0;
 if (process.env.NODE_ENV != "production") { debug=1; }
 
 const web3 = new Web3(new Web3.providers.IpcProvider("/home/developer/.rinkeby/geth.ipc", net));
-//const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 const myContract = new web3.eth.Contract(abi, contract_address, { from: account0, gasPrice: '20000000000' } );
 
 if(debug) {
@@ -40,7 +38,7 @@ startTransferEventListener();
 startApprovalEventListener();
 startBurnEventListener();
 
-// curl -X GET -H "Content-Type:application/json" http://192.168.0.71:3000/
+// curl -X GET -H "Content-Type:application/json" http://127.0.0.1:3000/
 app.get('/', (req, res) => {
   var help_cmd= {
     accounts:  { title: 'Get accounts list',   cmd: 'curl -X GET -H "Content-Type:application/json" http://127.0.0.1:3000/accounts' },
@@ -57,8 +55,8 @@ app.get('/', (req, res) => {
   res.send(help_cmd);
 })
 
-// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/balanceof -d '{"account":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8"}'
-app.post('/balanceof/', (req, res) => {
+// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/balanceOf -d '{"account":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8"}'
+app.post('/balanceOf/', (req, res) => {
   try {
     myContract.methods.balanceOf(req.body.account).call({from: account0}, function(error, result) {
       if(!error){
@@ -88,8 +86,8 @@ app.post('/transfer/', (req, res) => {
   .catch((error) => { res.send({ rc:'err', err_msg: error.message }); })
 });
 
-// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/transferfrom -d '{"from":"0x2b4218Cc6D8fd1691395DC5223E201a56BbEc512","to":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8", "value":"5000"}'
-app.post('/transferfrom/', (req, res) => {
+// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/transferFrom -d '{"from":"0x2b4218Cc6D8fd1691395DC5223E201a56BbEc512","to":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8", "value":"5000"}'
+app.post('/transferFrom/', (req, res) => {
   web3.eth.personal.unlockAccount(account0, unlock_password, 600)
   .then(function (unlocked, accounts) {
     if(debug) { console.log('Unlocked: ' + unlocked); }
@@ -145,8 +143,8 @@ app.post('/burn/', (req, res) => {
   .catch((error) => { res.send({ rc:'err', err_msg: error.message }); })
 });
 
-// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/burnfrom -d '{ "from":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8", "tokens":"5000" }'
-app.post('/burnfrom/', (req, res) => {
+// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/burnFrom -d '{ "from":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8", "tokens":"5000" }'
+app.post('/burnFrom/', (req, res) => {
   web3.eth.personal.unlockAccount(account0, unlock_password, 600)
   .then(function (unlocked, accounts) {
     if(debug) { console.log('Unlocked: ' + unlocked); }
@@ -161,13 +159,27 @@ app.post('/burnfrom/', (req, res) => {
 });
 
 
+// curl -X POST -H "Content-Type:application/json" http://127.0.0.1:3000/mint -d '{ "recipient":"0x41402ABbb04Fd1567886765ee6c4B75388cdFfC8", "tokens":"5000" }'
+app.post('/mint/', (req, res) => {
+  web3.eth.personal.unlockAccount(account0, unlock_password, 600)
+  .then(function (unlocked, accounts) {
+    if(debug) { console.log('Unlocked: ' + unlocked); }
+    myContract.methods.mint(req.body.recipient, req.body.tokens).send({from: account0})
+    .on('receipt', (receipt) => {
+      if(debug) { console.log(JSON.stringify(receipt, undefined, 2)); }
+      res.send({ rc:'ok'});
+    })
+    .catch((error) => { res.send({ rc:'err', err_msg: error.message }); })
+  })
+  .catch((error) => { res.send({ rc:'err', err_msg: error.message }); })
+});
+
 // curl -X GET -H "Content-Type:application/json" http://127.0.0.1:3000/name
 app.get('/name', (req, res) => {
   try {
     myContract.methods.name().call({from: account0}, (error, result) =>
     {
-      let name = { name: result };
-      res.send(name);
+      res.send({ name: result });
     })
   }
   catch (e) { res.send({ rc:'err', err_msg: e.message }); }
@@ -178,8 +190,18 @@ app.get('/symbol', (req, res) => {
   try {
     myContract.methods.symbol().call({from: account0}, (error, result) =>
     {
-       let symbol = { symbol: result };
-       res.send(symbol);
+       res.send({ symbol: result });
+    })
+  }
+  catch (e) { res.send({ rc:'err', err_msg: e.message }); }
+})
+
+// curl -X GET -H "Content-Type:application/json" http://127.0.0.1:3000/totalSupply
+app.get('/totalSupply', (req, res) => {
+  try {
+    myContract.methods.totalSupply().call({from: account0}, (error, result) =>
+    {
+      res.send({ totalSupply: result });
     })
   }
   catch (e) { res.send({ rc:'err', err_msg: e.message }); }
