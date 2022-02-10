@@ -1,6 +1,6 @@
 var Web3 = require('web3')
 const net = require('net');
-const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
+const web3 = new Web3(new Web3.providers.IpcProvider("/home/developer/node1/geth.ipc", net));
 
 web3.eth.getAccounts()
 .then(accList => {
