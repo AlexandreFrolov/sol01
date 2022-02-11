@@ -29,7 +29,7 @@ var web3;
 if(provider == 'ipc')
 {
   const net = require('net');
-  web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
+  web3 = new Web3(new Web3.providers.IpcProvider("/home/developer/node1/geth.ipc", net));
 }
 else if(provider == 'http')
 {
