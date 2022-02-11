@@ -6,7 +6,8 @@
      "eip155Block": 0,
      "eip158Block": 0,
      "byzantiumBlock": 0,
-     "constantinopleBlock": 0
+     "constantinopleBlock": 0,
+     "istanbulBlock": 0
   },
   "difficulty": "10",
   "gasLimit": "5100000",
