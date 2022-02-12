@@ -1,4 +1,4 @@
-// node call_contract_get.js HelloSol
+// node contract_get_balance.js HelloSol
 var contract_to_deploy = process.argv[2];
 
 console.log('Contract script: ' + contract_to_deploy);
@@ -29,25 +29,15 @@ web3.eth.getCoinbase()
   return my_contract;
 })
 .then(function () {
-  my_contract.methods.getValue().call({from: contract_address}, (error, result) =>
+  my_contract.methods.getBalance().call({from: contract_address}, (error, result) =>
   {
      if(!error){
-       console.log('getValue result: ' + result);
-     } else{
-       console.log(error);
-     }
-  })
-.then(function () {
-  my_contract.methods.getString().call({from: contract_address}, (error, result) =>
-  {
-     if(!error){
-       console.log('getString result: ' + result);
+       console.log('getBalance result: ' + result);
        process.exit(0);
      } else{
        console.log(error);
      }
   })
-})
 })
 .catch(function (error) {
   console.error(error);

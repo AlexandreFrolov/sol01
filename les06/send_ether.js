@@ -1,21 +1,16 @@
 // node send_ether.js HelloSol 0x6cbbA0d2bC126aEE51Acc4614E530b12B7abb4a1 0xDfaEFc30fB1Ac864Be7c5F44dffBb90C9ED2bA8d *******
-
 var from_address = process.argv[2];
 var to_address = process.argv[3];
 var unlock_password = process.argv[4];
-
 var myCoinbase;
 
 var fs = require("fs");
 var Web3 = require('web3');
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-
-//const net = require('net');
-//const web3 = new Web3(new Web3.providers.IpcProvider("/home/frolov/node1/geth.ipc", net));
+const net = require('net');
+const web3 = new Web3(new Web3.providers.IpcProvider("/home/developer/node1/geth.ipc", net));
 
 var version = web3.version;
 console.log('Web3 version: ' + version);
-
 web3.eth.getCoinbase()
 .then(coinbase => {
   myCoinbase = coinbase;
