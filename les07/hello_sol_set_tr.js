@@ -3,42 +3,29 @@ let Web3 = require('web3')
 let fs = require('fs')
 let request = require('request')
 
-var contract_name = process.argv[2];
-var network_id = process.argv[3];
-var unlock_password = process.argv[4];
-
-console.log('Contract script: ' + contract_name);
-
-var path = require('path');
-var contractJSON = require(path.join(__dirname, 'HelloSol/build/contracts/' + contract_name + '.json'));
-
-var decoded = JSON.parse(JSON.stringify(contractJSON.networks, undefined, 2));
-var contract_address = decoded[network_id].address;
-
-
-var abi = contractJSON.abi;
+const contract_name = process.argv[2];
+const network_id = process.argv[3];
+const unlock_password = process.argv[4];
+const path = require('path');
+const contractJSON = require(path.join(__dirname, 'HelloSol/build/contracts/' + contract_name + '.json'));
+const decoded = JSON.parse(JSON.stringify(contractJSON.networks, undefined, 2));
+const contract_address = decoded[network_id].address;
+const abi = contractJSON.abi;
 console.log('contract_address: ' +  contract_address);
-
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
-
-var version = web3.version;
-console.log('Web3 version: ' + version);
-
+const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
 let myContract = new web3.eth.Contract(abi, contract_address);
 
-web3.eth.getCoinbase()
-.then(coinbase => {
-  myCoinbase = coinbase;
-  console.log('coinbase: ' + coinbase);
-  return coinbase;
+web3.eth.getAccounts()
+.then(accounts => {
+  myAddress = accounts[0];
+  return myAddress;
 })
 .then(function (account) {
   return web3.eth.personal.unlockAccount(account, unlock_password, 600)
 })
 .then(function (unlocked) {
   console.log('Unlocked: ' + unlocked);
-
-  myContract.methods.setValue(307309).send({from: myCoinbase})
+  myContract.methods.setValue(307309).send({from: myAddress})
   .once('setValue transactionHash', (hash) => {
     console.log('hash: ' + hash);
   })
@@ -49,16 +36,14 @@ web3.eth.getCoinbase()
     console.log(JSON.stringify(receipt, undefined, 2));
   })
   .then(function () {
-
-  myContract.methods.setString("Тестовая строка 3739").send({from: myCoinbase})
-  .once('transactionHash', (hash) => {
-    console.log('setString hash: ' + hash);
+    myContract.methods.setString("Тестовая строка 3739").send({from: myAddress})
+    .once('transactionHash', (hash) => {
+      console.log('setString hash: ' + hash);
+    })
+    .on('receipt', (receipt) => {
+      console.log(JSON.stringify(receipt, undefined, 2));
+    })
   })
-  .on('receipt', (receipt) => {
-    console.log(JSON.stringify(receipt, undefined, 2));
-  })
-})
-
 })
 .catch(function (error) {
   console.error(error);
