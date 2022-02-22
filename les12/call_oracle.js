@@ -6,7 +6,6 @@ let request = require('request')
 var contract_name = process.argv[2];
 var network_id = process.argv[3];
 var unlock_password = process.argv[4];
-
 console.log('Contract script: ' + contract_name);
 
 var path = require('path');
@@ -29,11 +28,9 @@ web3.eth.getAccounts()
 .then(function (accounts) {
   account = accounts[0];
 
-//  myContract.events.UpdatedRate({fromBlock: 0, toBlock: 'latest'}, function(error, event){ console.log(">>> " + event) })
   myContract.events.UpdatedRate(function(error, event){ console.log(">>> " + event) })
     .on('data', (log) => {
         console.log('--- >>> Event UpdatedRate fired >>>')
-//          console.log("UpdatedRate event data: " + JSON.stringify(log, undefined, 2))
       myContract.methods.getRate().call({from: contract_address}, (error, result) =>
       {
         if(!error){
@@ -64,7 +61,7 @@ web3.eth.getAccounts()
       console.log('confNumber: ' + confNumber);
     })
     .on('receipt', (receipt) => {
-  //    console.log(JSON.stringify(receipt, undefined, 2));
+//      console.log(JSON.stringify(receipt, undefined, 2));
     })
     .on('error', console.error);
   })

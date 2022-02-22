@@ -1,5 +1,4 @@
 // node start_oracle.js USDRateOracle 5777
-
 let Web3 = require('web3')
 let fs = require('fs')
 let request = require('request')
@@ -9,13 +8,9 @@ var network_id = process.argv[3];
 var unlock_password = process.argv[4];
 console.log('Contract script: ' + contract_name);
 
-// /home/developer/sol01/les12/HelloSol/build/contracts
-
 var path = require('path');
 var contractJSON = require(path.join(__dirname, 'HelloSol/build/contracts/' + contract_name + '.json'));
 console.log('Dirname: ' +  path.join(__dirname, 'HelloSol/build/contracts/' + contract_name + '.json'));
-
-
 
 var decoded = JSON.parse(JSON.stringify(contractJSON.networks, undefined, 2));
 var contract_address = decoded[network_id].address;
@@ -37,10 +32,8 @@ web3.eth.getAccounts()
 .then(function (accounts) {
   account = accounts[0];
   console.log('Account: ' + account)
-
   console.log("Waiting for events on contract " + contract_address + ' ...')
   startEventListener(contract_address, account)
-
 }, function(err) {
     console.log('Error: ' + err)
 })
@@ -48,15 +41,12 @@ web3.eth.getAccounts()
   console.error(error);
 });
 
-
 function startEventListener(address, account) {
     myContract.events.RateUpdate(
-//    myContract.events.RateUpdate({fromBlock: 0, toBlock: 'latest'},
       function(error, event){
         console.log(">>> Event: " + event.event) })
         .on('data', (event) => {
             console.log('--- >>> Event RateUpdate fired')
-//            console.log("RateUpdate event data: " + JSON.stringify(event, undefined, 2))
             RateUpdateHandler(address, account)
         })
         .on('changed', (event) => {
@@ -66,9 +56,7 @@ function startEventListener(address, account) {
         .on('error', console.error);
 }
 
-
 function RateUpdateHandler(address, account) {
-
 let cbr_url = "https://www.cbr-xml-daily.ru/daily_json.js"
   request(cbr_url, function(error, response, body) {
     if(error)
@@ -100,8 +88,6 @@ let cbr_url = "https://www.cbr-xml-daily.ru/daily_json.js"
     .on('receipt', (receipt) => {
       var ret_result = receipt.events.UpdatedRate.returnValues[0]
       console.log('Receipt result: ' + ret_result)
-//        console.log('Receipt: ' + receipt)
-
       if (USD_rate == ret_result)
           console.log("=== > Successful update")
     })

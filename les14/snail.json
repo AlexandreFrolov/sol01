@@ -1,0 +1,18 @@
+{
+    "title": "photo 'Snail on the grass'",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Snail photo"
+        },
+        "description": {
+            "type": "string",
+            "description": "Photo 'Snail on the grass', JPEG, 3264x1840 px, 1,41 MB, 20.07.2013"
+        },
+        "image": {
+            "type": "string",
+            "description": "https://ipfs.io/ipfs/Qme1QwoGwS8pckakGRHJk4A3yyq7FMg4tPZpzGKZ6sae4N?filename=Qme1QwoGwS8pckakGRHJk4A3yyq7FMg4tPZpzGKZ6sae4N"
+        }
+    }
+}
