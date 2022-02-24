@@ -1,0 +1,16 @@
+{
+  "name": "ipfs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ipfs-http-client": "^56.0.1",
+    "it-to-buffer": "^2.0.2"
+  },
+  "type": "module"
+}
