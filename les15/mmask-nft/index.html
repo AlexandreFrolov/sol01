@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Тестирование Doctor NFT</title>
+<style>
+    body { width: 75em; margin: 2em; font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+<meta charset="utf-8" />
+</head>
+<body>
+<h1>Тестирование Doctor NFT</h1>
+
+<p>MetaMask установлен: <span id="metamask_ok">нет. Для продолжение работы, пожалуйста, <a href="https://metamask.io/" target="_blank">установите!</a></span></p>
+
+<div id="ethereumDiv">
+  <button class="enableEthereumButton">Использовать MetaMask</button>
+  <p><span class="showAccount"></span></p>
+  <div id="playArea">
+    <p><span class="chainID">[not available]</span></p>
+
+    <h2>Создать новый токен NFT</h2>
+
+    Адрес: <input type="text" id="address" name="addressInput"> URI: <input type="text" id="uri" name="uriInput">
+    <button class="newNftButton btn">Создать NFT</button>
+    <p><span class="newNftResult"></span></p>
+
+    <h2>Проверить токен NFT</h2>
+
+    Идентификатор токена: <input type="text" id="tokenID" name="tokenID">
+    <button class="tokenIDButton btn">Проверить</button>
+    <p><span class="tokenIDResult"></span></p>
+
+    <h2>Разрешить перевод токена DrNFT</h2>
+
+    Разрешить перевод токена DrNFT с идентификатором <input type="text" id="tokenIdApprove" name="tokenIdApprove"> на аккаунт с адресом: <input type="text" id="approveToAddr" name="approveToAddr">
+    <button class="approveButton btn">Разрешить</button>
+    <p><span class="approveResult"></span></p>
+
+    <h2>Перевод токенов DrNFT на другой аккаунт</h2>
+
+     Отправить DrNFT с идентификатором <input type="text" id="tokenId2" name="tokenId2Input"> на адрес: <input type="text" id="sendToAddr" name="sendToAddrInput">
+     <button class="sendDrNftButton btn">Отправить DrNFT</button>
+    <p><span class="sendDrNftResult"></span></p>
+  </div>
+</div>
+
+</body>
+<script src="https://cdn.ethers.io/lib/ethers-5.4.umd.min.js" type="application/javascript"></script>
+<script src="js/script.js"></script>
+</html>

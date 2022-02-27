@@ -5,7 +5,7 @@ async function main() {
   await hre.run('compile');
 
   const contract_name="DrNFT";
-  const project_path='/home/developer/sol01/les14/drnft/';
+  const project_path='/home/developer/sol01/les15/drnft/';
 
   const DrNFT = await hre.ethers.getContractFactory("DrNFT");
   const mydrnft = await DrNFT.deploy();
