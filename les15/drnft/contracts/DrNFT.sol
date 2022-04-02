@@ -53,6 +53,7 @@ contract DrNFT is ERC721, Ownable, ERC721URIStorage, ERC721Burnable, IERC721Rece
     return interfaceId == type(IERC721Enumerable).interfaceId || super.supportsInterface(interfaceId);
   }
   function tokenByIndex(uint256 index) public view override(ERC721Enumerable) returns (uint256) {
+    require(index < ERC721Enumerable.totalSupply(), "ERC721Enumerable: global index out of bounds");
     return super.tokenByIndex(index);
   }
 }
