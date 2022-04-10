@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/developer/sol01/les16/ViewStorage/contracts/HelloSol.sol": {
-      "lastModificationDate": 1648892801313,
-      "contentHash": "7d108ecb7acb7905a799a4a8133c1546",
+      "lastModificationDate": 1649603777981,
+      "contentHash": "7959ff9e1be01db37a9df248afc677e8",
       "sourceName": "contracts/HelloSol.sol",
       "solcConfig": {
         "version": "0.8.4",

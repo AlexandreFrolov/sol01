@@ -40,6 +40,10 @@ describe('Тестирование смарт-контракта HelloSol...', f
       expect(await myHelloSol.getStorageValue()).to.equal(123);
   });
 
+  it("setStorageValueNegative should return -1", async function () {
+      await myHelloSol.setStorageValueNegative(-1);
+      expect(await myHelloSol.getStorageValueNegative()).to.equal(-1);
+  });
 
   it("getString should return 'Test string 2022-03-30'", async function () {
       await myHelloSol.setString('Test string 2022-03-30');
@@ -51,13 +55,11 @@ describe('Тестирование смарт-контракта HelloSol...', f
       expect(await myHelloSol.getString()).to.equal('Test string 2022-03-30');
   });
 
-  it("getBytes should return '0x9aa569ae2e35d886c7a456cc32b7dd7cd61ecbb0f489b03214cbb5255a6e3aa9'", async function () {
+  it("getBytes should return '0x5465737420737472696e6720323032322d30332d333000000000000000000000'", async function () {
       const ascii = 'Test string 2022-03-30\0\0\0\0\0\0\0\0\0\0';
       const hex = web3.utils.asciiToHex(ascii);
       console.log(hex);
       await myHelloSol.setBytes(hex);
-//      const rHex = await myHelloSol.getBytes();
-//      console.log(web3.utils.hexToAscii(rHex));
       expect(await myHelloSol.getBytes()).to.equal(hex);
   });
 
@@ -84,5 +86,35 @@ describe('Тестирование смарт-контракта HelloSol...', f
       expect(raw).to.equal("0x9aa569ae2e35d886c7a456cc32b7dd7cd61ecbb0f489b03214cbb5255a6e3aa9");
   });
 
+  it("getBool should return true", async function () {
+      await myHelloSol.setBool(7, true);
+      expect(await myHelloSol.getBool(7)).to.equal(true);
+  });
+
+  it("getBoolB should return true", async function () {
+      await myHelloSol.setBoolB(true);
+      expect(await myHelloSol.getBoolB()).to.equal(true);
+  });
+
+  it("getBoolean should return true", async function () {
+      await myHelloSol.setBool(7, true);
+      expect(await myHelloSol.getBool(7)).to.equal(true);
+  });
+
+  it("getBoolStruct should return true", async function () {
+      await myHelloSol.setBoolStruct(true);
+      expect(await myHelloSol.getBoolStruct()).to.equal(true);
+  });
+
+
+  it("getMapValue should return 1", async function () {
+      await myHelloSol.setUintMap(1,1);
+      expect(await myHelloSol.getMapValue(1)).to.equal(1);
+  });
+
+  it("getArrayValue should return 1", async function () {
+      await myHelloSol.setUintArray(1);
+      expect(await myHelloSol.getArrayValue(0)).to.equal(1);
+  });
 
 });

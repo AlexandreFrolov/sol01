@@ -15,6 +15,8 @@ contract DrNFT is ERC721, Ownable, ERC721URIStorage, ERC721Burnable, IERC721Rece
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
+//  mapping (uint256 => address) tokenIdToMinter;
+
   constructor() ERC721("Doctor NFT", "DRNFT") {
   }
   function mint(address toAddress, string memory newTokenURI) external onlyOwner() {
@@ -23,6 +25,8 @@ contract DrNFT is ERC721, Ownable, ERC721URIStorage, ERC721Burnable, IERC721Rece
     uint256 newNftTokenId = _tokenIds.current();
     _safeMint(toAddress, newNftTokenId);
     _setTokenURI(newNftTokenId, newTokenURI);
+
+//    tokenIdToMinter[_tokenIds.current()] = msg.sender;
   }
   function setBaseURI(string memory baseURI_) external onlyOwner() {
     _baseURIextended = baseURI_;

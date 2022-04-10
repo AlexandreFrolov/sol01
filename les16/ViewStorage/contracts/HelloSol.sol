@@ -6,6 +6,7 @@ contract HelloSol {
     uint128 storage_value_1;
     uint128 storage_value_2;
     uint storage_value;
+    int storage_value_negative;
 
 
     string savedString;
@@ -16,6 +17,45 @@ contract HelloSol {
     uint itValue;
     bytes32 keccak256Result;
 
+    uint booleanValue;
+    bool b1;
+    bool b2;
+    bool b3;
+    bool b4;
+
+    struct BoolStruct {
+      bool b1;
+      bool b2;
+      bool b3;
+      bool b4;
+    }
+
+    BoolStruct bs;
+
+	mapping(uint => uint) public uintMap;
+	uint[] public uintArray;
+
+
+    //constructor() {
+//        booleanValue = 0xfffffff;
+    //}
+
+
+    function setUintMap(uint idx, uint value) public {
+	  uintMap[idx] = value;
+    }
+
+    function setUintArray(uint value) public {
+	  uintArray.push(value);
+    }
+
+    function getMapValue(uint idx) public view returns(uint) {
+    	return uintMap[idx];
+    }
+
+    function getArrayValue(uint idx) public view returns(uint) {
+    	return uintArray[idx];
+    }
 
     function setStorageValue(uint newValue) public {
         storage_value = newValue;
@@ -25,9 +65,16 @@ contract HelloSol {
         storage_value = newValue;
     }
 
-
     function getStorageValue() public view returns(uint) {
         return storage_value;
+    }
+
+    function setStorageValueNegative(int newValue) public {
+        storage_value_negative = newValue;
+    }
+
+    function getStorageValueNegative() public view returns(int) {
+        return storage_value_negative;
     }
 
     function setMemoryValue(uint newValue) public pure returns(uint) {
@@ -93,6 +140,37 @@ contract HelloSol {
 
     function doNotUseKeccak256() public {
         keccak256Result = 0x9aa569ae2e35d886c7a456cc32b7dd7cd61ecbb0f489b03214cbb5255a6e3aa9;
+    }
+
+    function setBool(uint256 boolNumber, bool value) public {
+        if (value)
+            booleanValue = booleanValue | uint256(1) << boolNumber;
+        else
+            booleanValue = booleanValue & ~(uint256(1) << boolNumber);
+    }
+
+    function getBool(uint256 boolNumber) public view returns(bool)
+    {
+        uint256 flag = (booleanValue >> boolNumber) & uint256(1);
+        return (flag == 1 ? true : false);
+    }
+
+    function setBoolB( bool value) public {
+        b1 = value;
+    }
+
+    function getBoolB() public view returns(bool)
+    {
+        return (b1);
+    }
+
+    function setBoolStruct(bool value) public {
+        bs.b1 = value;
+    }
+
+    function getBoolStruct() public view returns(bool)
+    {
+        return (bs.b1);
     }
 
 }
