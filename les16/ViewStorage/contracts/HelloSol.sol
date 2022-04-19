@@ -36,9 +36,10 @@ contract HelloSol {
 	uint[] public uintArray;
 
 
-    //constructor() {
+    constructor() {
+          booleanValue = 0;
 //        booleanValue = 0xfffffff;
-    //}
+    }
 
 
     function setUintMap(uint idx, uint value) public {
